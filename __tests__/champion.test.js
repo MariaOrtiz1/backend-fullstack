@@ -70,4 +70,20 @@ describe('champion routes', () => {
 
     expect(res.body).toEqual([Aphelios, Gragas, Pantheon]);
   });
+
+  it('updates a champion by id via PUT', async () => {
+    const Kayle = await Champion.insert({ 
+      name: 'Kayle',
+      title: 'The Righteous',
+      quote: 'No human is perfect. But I am not human',
+      region: 'Targon', 
+      position: 'fighter'
+    });
+
+    const res = await request(app)
+      .put(`/api/v1/champions/${Kayle.id}`)
+      .send({ region: 'Demacia' });
+
+    expect(res.body).toEqual({ ...Kayle, region: 'Demacia' });
+  });
 });
