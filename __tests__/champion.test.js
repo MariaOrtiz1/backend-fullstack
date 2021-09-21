@@ -39,4 +39,35 @@ describe('champion routes', () => {
 
     expect(res.body).toEqual(Ahri);
   });
+
+  it('gets all champions via GET', async () => {
+    const Aphelios = await Champion.insert({ 
+      name: 'Aphelios',
+      title: 'The Weapon Of The Faithful',
+      quote: 'Our faith is proven fate each time we deny it.',
+      region: 'Targon', 
+      position: 'marksman'
+    });
+
+    const Gragas = await Champion.insert({ 
+      name: 'Gragas',
+      title: 'The Rabble Rouser',
+      quote: 'Now this will put hair on your chest!',
+      region: 'Freljord', 
+      position: 'fighter'
+    });
+
+    const Pantheon = await Champion.insert({ 
+      name: 'Atreus',
+      title: 'The Unbreakable Spear',
+      quote: 'Here is my eternity… a day the gods will remember!',
+      region: 'Targon', 
+      position: 'fighter'
+    });
+
+    const res = await request(app)
+      .get('/api/v1/champions');
+
+    expect(res.body).toEqual([Aphelios, Gragas, Pantheon]);
+  });
 });
