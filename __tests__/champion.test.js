@@ -2,7 +2,7 @@ import pool from '../lib/utils/pool.js';
 import setup from '../data/setup.js';
 import request from 'supertest';
 import app from '../lib/app.js';
-// import Champion from '../lib/models/Champion.js';
+import Champion from '../lib/Model/Champion.js';
 
 describe('champion routes', () => {
   beforeEach(() => {
@@ -25,5 +25,18 @@ describe('champion routes', () => {
       ...lux
     });
   });
-});
 
+  it('gets a champion by id via GET', async () => {
+    const Ahri = await Champion.insert({ 
+      name: 'Ahri',
+      title: 'The Nine-Tailed Fox',
+      quote: 'Human emotions can be more volatile than even the deepest magic.',
+      region: 'Ionia', 
+      position: 'mage'
+    });
+
+    const res = await request(app).get(`/api/v1/champions/${Ahri.id}`);
+
+    expect(res.body).toEqual(Ahri);
+  });
+});
