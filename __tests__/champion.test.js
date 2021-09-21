@@ -85,5 +85,23 @@ describe('champion routes', () => {
       .send({ region: 'Demacia' });
 
     expect(res.body).toEqual({ ...Kayle, region: 'Demacia' });
+    
+  });
+
+  it('deletes an existing champion by id via DELETE', async () => {
+    const Gankplank = await Champion.insert({
+      name: 'Gankplank',
+      title: 'The Saltwater Scourge',
+      quote: 'I was cutting throats and sinking Noxian war galleys when you were still pissing your britches, boy. You don’t want to take me on.',
+      region: 'Bilgewater', 
+      position: 'fighter'
+    });
+
+    const res = await request(app)
+      .delete(`/api/v1/champions/${Gankplank.id}`);
+
+    expect(res.body).toEqual({ 
+      message: `${Gankplank.name} has been deleted`
+    });
   });
 });
